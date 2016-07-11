@@ -1,0 +1,9 @@
+server {
+    listen {{ server_port }};
+    server_name {{ server_name }};
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/{{ project_path }}/{{ project_name }}.sock;
+    }
+}

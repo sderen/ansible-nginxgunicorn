@@ -1,0 +1,12 @@
+description "{{ project_description }}"
+
+start on runlevel [2345]
+stop on runlevel [!2345]
+
+respawn
+setuid {{ project_user }}
+setgid www-data
+
+env PATH={{ virtualenv_path }}/bin
+chdir {{ project_path }}
+exec gunicorn --workers {{ project_worker_count }} --bind unix:{{project_name}}.sock -m 007 wsgi

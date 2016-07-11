@@ -1,2 +1,39 @@
 ---
 # tasks file for nginxgunicorn
+- name: update apt cache
+  apt: update_cache=yes
+
+- name: install required apt packages
+  apt: name={{ item }} state=latest
+  with_items:
+    - python-pip
+    - python-dev
+    - nginx
+
+- name: install python virtualenv
+  pip: name=virtualenv
+
+# create directories
+- name: create application directory
+  file: path={{ python_application_path }} state=directory owner={{ project_user }} group={{ project_group }}
+
+- name: copy application
+  copy: src=../files/{{ project_name }} dest={{ python_application_path }}/  owner={{ project_user }} group={{ project_group }}
+
+- name: install requirements
+  pip: requirements={{ project_path }}/requirements.txt virtualenv={{ virtualenv_path }}
+
+- name: create upstart script
+  template: src=../templates/upstart.conf.j2 dest=/etc/init/{{ project_name }}.conf
+
+- name: start uwsgi service
+  service: name={{ project_name }} state=restarted
+
+- name: copy nginx config
+  template: src=../templates/nginx.j2 dest=/etc/nginx/sites-available/{{ project_name }}
+
+- name: symlink nginx conf
+  file: src=/etc/nginx/sites-available/{{ project_name }} dest=/etc/nginx/sites-enabled/{{ project_name }} state=link
+
+- name: restart nginx
+  service: name=nginx state=restarted

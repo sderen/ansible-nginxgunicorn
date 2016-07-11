@@ -1,2 +1,15 @@
 ---
 # defaults file for nginxgunicorn
+python_application_path: /www
+
+project_description: Gunicorn application server running {{ project_name }}
+project_path: "{{ python_application_path }}/{{ project_name }}"
+project_worker_count: 3
+virtualenv_path: "{{ project_path }}/venv"
+project_user: ubuntu
+project_group: www-data
+
+linux_user: nginx_user
+
+server_port: 80
+server_name: localhost
