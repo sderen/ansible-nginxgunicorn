@@ -1,7 +1,9 @@
 Ansible Nginx Gunicorn
 =========
 
-A brief description of the role goes here.
+[![Build Status](https://travis-ci.org/sderen/ansible-nginxgunicorn.svg?branch=master)](https://travis-ci.org/sderen/ansible-nginxgunicorn)
+
+Ansible role to host python applications using gunicorn and nginx.
 
 Requirements
 ------------
