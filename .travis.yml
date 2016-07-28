@@ -35,9 +35,9 @@ install:
 
 script:
   - sudo ansible-galaxy install -r tests/requirements.yml
-  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+  - sudo ansible-playbook tests/test.yml -i tests/inventory --syntax-check
   - docker stop nginx_host || true
-  - ansible-playbook tests/test.yml -i tests/inventory
+  - sudo ansible-playbook tests/test.yml -i tests/inventory
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
