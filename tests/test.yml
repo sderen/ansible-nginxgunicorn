@@ -18,5 +18,8 @@
      action: uri url=http://localhost return_content=yes
      register: webpage
 
+   - name: print content
+     debug: msg="Content is {{ webpage }}"
+
    - action: fail
      when:  "'Hello, World!' not in webpage.content"

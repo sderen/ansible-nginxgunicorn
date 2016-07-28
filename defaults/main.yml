@@ -13,3 +13,4 @@ linux_user: nginx_user
 
 server_port: 80
 server_name: localhost
+remove_default_site: true
