@@ -37,7 +37,7 @@
 
 - name: delete default sites
   file: path=/etc/nginx/sites-available/default state=absent 
-  when: {{ remove_default_site }}
+  when: remove_default_site
 
 - name: restart nginx
   service: name=nginx state=restarted
