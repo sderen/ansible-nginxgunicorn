@@ -1,5 +1,22 @@
 ---
-- hosts: localhost
-  remote_user: root
+- name: Start docker containers
+  hosts: localhost
+  gather_facts: false
+  vars:
+    inventory:
+     - name: nginx_host
+       image: "ubuntu-upstart:14.04"
   roles:
-    - nginxgunicorn
+   - { role: chrismeyersfsu.provision_docker, provision_docker_company: 'ansible', provision_docker_inventory: "{{ inventory }}" }
+
+- name: Run grafana tests
+  hosts: nginx_host
+  roles:
+   - { role: ansible-nginxgunicorn, project_name: testproject, become: true, project_user: root }
+  tasks:
+   - name: test main url
+     action: uri url=http://localhost return_content=yes
+     register: webpage
+
+   - action: fail
+     when:  "'Hello, World!' not in webpage.content"
