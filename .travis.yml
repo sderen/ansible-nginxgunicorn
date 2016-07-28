@@ -35,6 +35,7 @@ install:
 
 script:
   - sudo ansible-galaxy install -r tests/requirements.yml
+  - sudo export ANSIBLE_HOST_KEY_CHECKING=False
   - sudo ansible-playbook tests/test.yml -i tests/inventory --syntax-check
   - docker stop nginx_host || true
   - sudo ansible-playbook tests/test.yml -i tests/inventory
