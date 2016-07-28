@@ -32,12 +32,13 @@ install:
   - sudo apt-get install -y ansible
   - sudo rm /usr/bin/python && sudo ln -s /usr/bin/python2.7 /usr/bin/python
   - ansible --version
+  - sudo sed -i '/^#.*host_key_checking /s/^#//' /etc/ansible/ansible.cfg
 
 script:
   - sudo ansible-galaxy install -r tests/requirements.yml
   - sudo ansible-playbook tests/test.yml -i tests/inventory --syntax-check
   - docker stop nginx_host || true
-  - sudo ansible-playbook  -e 'host_key_checking=False' tests/test.yml -i tests/inventory
+  - sudo ansible-playbook tests/test.yml -i tests/inventory
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
